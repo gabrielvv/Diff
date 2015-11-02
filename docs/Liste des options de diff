@@ -1,0 +1,87 @@
+Option diff
+
+- b ignore les différences dû à des espaces blancs
+- B ignore les différences dû à des lignes blanches
+- i ignore les différences minuscules/MAJUSCULES
+- q indiquer seulement si les fichiers sont différents et ne pas afficher les différences elles-mêmes
+- s indiquer lorsque deux fichiers sont identiques
+- r comparaison récursive des fichiers d'un répertoire, sous répertoires...
+
+
+--normal	output a "normal" diff. (This is the default)
+-q, --brief	Produce output only when files differ. If there are no differences, output nothing.
+-s, --report-identical-files	Report when two files are the same.
+-c, -C NUM, --context[=NUM]	Provide NUM (default 3) lines of context.
+-u, -U NUM, --unified[=NUM]	Provide NUM (default 3) lines of unified context.
+-e, --ed	Output an ed script.
+
+-n, --rcs	Output an RCS-format diff.
+
+-y, --side by side	Format output in two columns.
+-W, --width=NUM	Output at most NUM (default 130) print columns.
+--left-column	Output only the left column of common lines.
+--suppress-common-lines	Do not output lines common between the two files.
+-p, --show-c-function	For files that contain C code, also show which C function each change is in.
+-F, --show-function-line=RE	Show the most recent line matching regular expression RE.
+--label LABEL	When displaying output, use the label LABEL instead of the file name. This option can be issued more than once for multiple labels.
+-t, --expand-tabs	Expand tabs to spaces in output.
+-T, --initial-tab	Make tabs line up by prepending a tab if necessary.
+--tabsize=NUM	Define a tab stop as NUM (default 8) columns.
+--suppress-blank-empty	Suppress spaces and/or tabs before empty output lines.
+-l, --paginate	Pass output through pr to paginate it.
+
+-r, --recursive	Recursively compare any subdirectories found.
+
+-N, --new-file	If a specified file does not exist, perform the diff as if it is an empty file.
+--unidirectional-new-file	Same as -n, but only applies to the first file.
+--ignore-file-name-case	Ignore case when comparing file names.
+--no-ignore-file-name-case	Consider case when comparing file names.
+-x, --exclude=PAT	Exclude files that match filename pattern PAT.
+-X, --exclude-from=FILE	Exclude files that match any filename pattern in file FILE.
+-S, --starting-file=FILE	Start with file FILE when comparing directories.
+
+--from-file=FILE1	Compare FILE1 to all operands; FILE1 can be a directory.
+
+--to-file=FILE2	compare all operands to FILE2; FILE2 can be a directory.
+-i, --ignore-case	ignore case differences in file contents.
+-E, --ignore-tab-expansion	ignore changes due to tab expansion.
+
+-b, --ignore-space-change	ignore changes in the amount of white space.
+
+-w, --ignore-all-space	ignore all white space.
+-B, --ignore-blank-lines	ignore changes whose lines are all blank.
+-I, --ignore-matching-lines=RE	ignore changes whose lines all match regular expression RE.
+
+-a, --text	treat all files as text.
+--strip-trailing-cr	strip trailing carriage return on input.
+
+-D, --ifdef=NAME	output merged file with "#ifdef NAME" diffs.
+--GTYPE-group-format=GFMT	format GTYPE input groups with GFMT.
+--line-format=LFMT	format all input lines with LFMT.
+--LTYPE-line-format=LFMT	format LTYPE input lines with LFMT.
+
+These format options provide fine-grained control over the output of diff, generalizing -D/--ifdef.
+
+LTYPE is old, new, or unchanged.
+
+GTYPE can be any of the LTYPE values, or the value changed.
+
+GFMT (but not LFMT) may contain:
+%<	lines from FILE1
+%>	lines from FILE2
+%=	lines common to FILE1 and FILE2.
+
+LETTERs are as follows for new group, lower case for old group:
+
+F	first line number
+L	last line number
+N	number of lines = L - F + 1
+E	F - 1
+M	L + 1
+%(A=B?T:E)	if A equals B then T else E
+-d, --minimal	try hard to find a smaller set of changes.
+--horizon-lines=NUM	keep NUM lines of the common prefix and suffix.
+--speed-large-files	assume large files and many scattered small changes.
+--help	display a help message and exit.
+-v, --version	output version information and exit.
+
