@@ -1,0 +1,18 @@
+Planning
+
+6/11 fonction de base avec 2 fichiers
+Semaine1 -> David et Mickael sur les options, Gabriel sur la diff de dossiers
+Semaine2 ->
+23/11 -> fin dev - test - debug - présentation
+26/11
+
+--normal
+-q, --brief
+-s
+(tous les :)
+--ignore
+...
+-r
+-N
+-y
+(-n)
