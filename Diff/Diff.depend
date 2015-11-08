@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1446997674 source:d:\projetesgi\projet c\diff\diff\main.c
+	<stdio.h>
+	<stdlib.h>
+	"stringfile.h"
+	"diffoption.h"
+
+1446997619 d:\projetesgi\projet c\diff\diff\stringfile.h
+
+1446997671 d:\projetesgi\projet c\diff\diff\diffoption.h
+

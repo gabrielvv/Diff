@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1446997874 source:c:\users\bordage\desktop\diff1\diff1\main.c
+	<stdio.h>
+	<stdlib.h>
+	"stringfile.h"
+	"diffoption.h"
+
+1446997947 c:\users\bordage\desktop\diff1\diff1\stringfile.h
+
+1446997928 c:\users\bordage\desktop\diff1\diff1\diffoption.h
+
