@@ -3,11 +3,12 @@
 
 
 typedef struct s_maillon{
-  char* datas;
+  int line_index;
+  char first_char;
   struct s_maillon* next;
 }t_maillon;
 
-t_maillon* new_maillon(int charLength);
+t_maillon* new_maillon(int,char);
 
 // renvoyer la taille de la liste
 unsigned int linked_list_size(t_maillon*);
@@ -24,5 +25,16 @@ int linked_list_get_by_value(t_maillon*, int);
 
 //libérer l'espace occupé en mémoire par la liste chaînée (tous les maillons)
 void linked_list_free(t_maillon**);
+
+/*Add an s_maillon at the end of the linked_list */
+void linked_list_append(t_maillon** list, int index, char fc);
+/*Insert at any place between 0 and linked_list_size() */
+void linked_list_insert(t_maillon** list, int index, int data);
+/* Remove the s_maillon at index position, if index is in [0, linked_list_size()] */
+void linked_list_remove_indice(t_maillon** list, unsigned int index);
+/* Remove first s_maillon containing the data value. */
+void linked_list_remove_value(t_maillon** list, int data);
+/* Remove all s_maillon containing the data value. */
+void linked_list_remove_all(t_maillon** list, int data);
 
 #endif

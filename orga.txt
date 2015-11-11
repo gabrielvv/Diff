@@ -1,10 +1,10 @@
 Planning
 
-6/11 fonction de base avec 2 fichiers
+6/11 fonctions de base avec 2 fichiers
 Semaine1 -> David et Mickael sur les options, Gabriel sur la diff de dossiers
 Semaine2 ->
-23/11 -> fin dev/test/debug/présentation/commentaires
-26/11
+23/11 -> fin dev/test/debug/présentation/commentaires/gestion des erreurs
+26/11 -> Soutenance
 
 --normal
 -q, --brief

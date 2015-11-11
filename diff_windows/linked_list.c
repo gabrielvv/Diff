@@ -3,12 +3,13 @@
 #include <stdio.h>
 /* Implements your functions here.*/
 
-t_maillon* new_maillon(int charLength){
+t_maillon* new_maillon(int line_index, char first_char){
   t_maillon *t;
   t = (t_maillon*)malloc(sizeof(t_maillon));
-  t->datas = malloc(sizeof(char)*charLength);
+  t->first_char = first_char;
+  t->line_index = line_index;
   t->next = NULL;
-  printf("cr\212ation pointeur %p de valeur %s\n", t, t->datas);
+  printf("cr\212ation pointeur %p de fc %c\n", t, t->first_char);
   return t;
 }
 
@@ -38,19 +39,19 @@ int linked_list_get_by_position(t_maillon* t, unsigned int pos, int* find){
     }
     //printf("ok2\n");
     *find = 1;
-    return new_t->datas;
+    return new_t->line_index;
   }else{
     *find = 0;
     return 0;
   }
 }
 
-int linked_list_get_by_value(t_maillon* t, int value){
+int linked_list_get_by_line_index(t_maillon* t, int line_index){
   t_maillon* new_t;
   new_t = t;
   int pos = 0;
 
-  while(new_t->datas != value){
+  while(new_t->line_index != line_index){
     pos++;
     new_t = new_t->next;
     if(new_t == NULL){
@@ -66,7 +67,7 @@ void linked_list_display(t_maillon* t){
   new_t = t;
 
   do{
-
+    printf("line_index: %d, char: %c\n",new_t->line_index, new_t->first_char);
   }while((new_t = new_t->next) != NULL);
   printf("\n");
   return;
@@ -79,10 +80,38 @@ void linked_list_free(t_maillon** t){
   t_maillon* t_remove;
 
   while((t_remove = new_t)){
-    printf("lib\212ration dynamique %p de valeur %s et pointe sur %p\n", t_remove, t_remove->datas, t_remove->next);
-    free(t_remove->datas);
+    printf("lib\212ration dynamique %p de valeur %c et pointe sur %p\n", t_remove, t_remove->first_char, t_remove->next);
+    //free(t_remove->datas);
     new_t = new_t->next;
     free(t_remove);
   }
   return;
+}
+
+/*Add an s_maillon at the end of the linked_list */
+void linked_list_append(t_maillon** list, int line_index, char fc){
+  //printf("list_append\n");
+
+  t_maillon* t = *list;
+  if(!t){
+    t = malloc(sizeof(t_maillon));
+    t->line_index = line_index;
+    t->first_char = fc;
+    t->next = NULL;
+    *list = t;
+    return;
+    //printf("append pointer %p avec valeur %d\n", t, t->data);
+    //system("pause");
+  }else{
+    t_maillon* new_t = malloc(sizeof(t_maillon));
+    new_t->line_index = line_index;
+    new_t->first_char = fc;
+    new_t->next = NULL;
+    while(t->next){
+      //printf("boucle append\n");
+      t = t->next;
+    }
+    t->next = new_t;
+    return;
+  }
 }
