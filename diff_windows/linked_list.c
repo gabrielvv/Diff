@@ -67,7 +67,7 @@ void linked_list_display(t_maillon* t){
   new_t = t;
 
   do{
-    printf("line_index: %d, char: %c\n",new_t->line_index, new_t->first_char);
+    printf("Display: line_index: %d, char: %c\n",new_t->line_index, new_t->first_char);
   }while((new_t = new_t->next) != NULL);
   printf("\n");
   return;
@@ -112,6 +112,65 @@ void linked_list_append(t_maillon** list, int line_index, char fc){
       t = t->next;
     }
     t->next = new_t;
+    return;
+  }
+}
+
+int linked_get_insert_pos(t_maillon* t, int line_index){
+  t_maillon* new_t;
+  new_t = t;
+  int pos = 0;
+  if(new_t == NULL){
+    return (-1);
+  }
+
+  while(new_t->line_index < line_index){
+    pos++;
+    new_t = new_t->next;
+    if(new_t == NULL){
+      return (-1);
+    }
+  }
+  return pos;
+}
+
+/*Insert at any place between 0 and linked_list_size() */
+void linked_list_insert(t_maillon** list, int line_index, char fc, int pos){
+  //printf("list_insert\n");
+
+  //printf("size %u", linked_list_size(*list));
+
+  t_maillon* t = *list;
+
+  if(pos == 0){
+    if(!t){ linked_list_append(list, line_index, fc);return;}
+    else{
+      t_maillon* t_insert = malloc(sizeof(t_maillon));
+      t_insert->line_index = line_index;
+      t_insert->first_char = fc;
+      t_insert->next = t;
+      *list = t_insert; //le nouvel élément est tête de liste pointée par list
+      return;
+    }
+  }else if(pos == linked_list_size(*list)){
+    linked_list_append(list, line_index, fc);
+    return;
+  }else if(0 < pos && pos < linked_list_size(*list)){
+
+    t_maillon* t_before = *list;
+    t_maillon* t_insert = malloc(sizeof(t_maillon));
+    t_insert->line_index = line_index;
+    t_insert->first_char = fc;
+    int i;
+    for(i = 0; i < pos-1; i++){
+      t_before = t_before->next;
+      //printf("incrémentation insert");
+    }
+    //printf("insertion %p a l'pos %d\n", t_insert, i+1);
+    //system("pause");
+    t_maillon* t_after = t_before->next;
+    t_before->next = t_insert;
+    t_insert->next = t_after;
     return;
   }
 }

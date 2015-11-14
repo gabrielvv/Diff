@@ -13,7 +13,7 @@ c_file* new_c_file(FILE* fp){
 
 
 void printContent(c_file* cf){
-  int i, j;
+  int i;
   for(i=0; i<cf->lines_count; i++){
     char* str = cf->lines_content[i];
     printf("<%s", str);
@@ -41,7 +41,7 @@ void set_lines_count_and_alloc(c_file* cf){
 
 void set_char_count_per_line(c_file* cf){
 
-  int i,j, char_count;
+  int i, char_count;
   char c;
   FILE* fp = cf->file;
   rewind(fp);
@@ -67,7 +67,7 @@ void set_char_count_per_line(c_file* cf){
 
 void set_lines_content(c_file* cf){
 
-  int i,j, char_count;
+  int i,j;
   char c;
   FILE* fp = cf->file;
   rewind(fp);

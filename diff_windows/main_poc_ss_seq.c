@@ -2,55 +2,20 @@
 #include <stdlib.h>
 #include "contiguous_list.h"
 #include "custom_file.h"
-#include "first_char_of_line.h"
 #include <string.h>
 
-// + ESPACE DE NOMS
-
-// CR = 13
-// LF = 10
-
-
-
-
-short line_comp();
-void dealingWithArg(char*);
-void printOutput();
-void displayHelp();
-
-//GESTION DES ERREURS
 
 int main(int argc, char* argv[])
 {
-    /*if(argc < 3){
-        printf("Nombre d' arguments insuffisant");
-        return 1;
-    }*/
 
-    /*FILE *fp1, *fp2;
-    fp1 = fopen(argv[1], "r");
-    c_file *myCustomFile = new_c_file(fp1);
-    setParams(myCustomFile);
-    //printContent(myCustomFile);
-
-    fp2 = fopen(argv[2], "r");
-    c_file *myCustomFile2 = new_c_file(fp2);
-    setParams(myCustomFile2);
-    //printContent(myCustomFile2);
-    printf("%d", line_comp(myCustomFile2, myCustomFile, 0));
-    printf("%d", line_comp(myCustomFile2, myCustomFile, 1));
-    fclose(fp1);
-    fclose(fp2);
-    return 0;*/
-
-    char tab2[9] = {'a','b','c','d','e','f','g','h'}; //contient seulement les lignes ordonnées de file 1 qu'on retrouve ds file2
+    char tab2[9] = {'b','c','d','e','f','g','h','a'}; //contient seulement les lignes ordonnées de file 1 qu'on retrouve ds file2
     char tab1[9] = {'h','b','c','d','e','g','a','f'}; //contient seulement les lignes ordonnées de file2 qu'on retrouve ds file1
     t_list* result_list = list_create(8);
     t_list* tmp_list = list_create(8);
 
     int i, j, store, offset, start;
     char c;
-    start = offset = 0;
+    store = start = offset = 0;
     printf("tab1 de longueur: %d\ntab2 de longueur: %d\n", strlen(tab1), strlen(tab2));
 
     while((strlen(tab1)-start) > result_list->length){
