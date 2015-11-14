@@ -7,6 +7,7 @@ void list_append(t_list* tl,int c){
 
     if(tl->length < tl->max && tl){
         tl->datas[tl->length++] = c;
+        //printf("Append %d\n", c);
     }else{
         printf("Erreur list_append\n");
     }
@@ -16,6 +17,7 @@ void list_append(t_list* tl,int c){
 void list_datas_copy(t_list* from, t_list* to){
 
   if(from->length <= to->length){
+    //printf("datas copy");
     int i;
     for(i = 0; i < from->length; i++){
       to->datas[i] = from->datas[i];
@@ -32,7 +34,9 @@ t_list* list_create(unsigned int max){
 }
 
 void list_display(t_list* tl){
+    //printf("display :\n");;
     if(tl && tl->length > 0){
+        //printf("display :\n");;
         int i;
         for(i = 0; i < (tl->length-1); i++)
             printf("%d, ", tl->datas[i]);
@@ -104,18 +108,22 @@ t_list* list_concat(t_list* tl,...){
     length += tl->length;
 
     while((list = va_arg(pa, t_list*))){
+        //list_display(list);
         length+=list->length;
     }
 
     va_end(pa);
 
+    //printf("Total length = %d", length);
     t_list* concatList = list_create(length);
+
 
     va_start(pa, tl);
 
     int i = 0;
     int j;
     for(j=0;j<tl->length;j++){
+        //printf("boucle\n");
         concatList->datas[i] = tl->datas[j];
         concatList->length++;
         i++;
@@ -124,12 +132,16 @@ t_list* list_concat(t_list* tl,...){
     while((list = va_arg(pa, t_list*))){
         for(j=0;j<list->length;j++){
 
+
             concatList->datas[i] = list->datas[j];
+            //printf("boucle index %d, data: %d\n", i, concatList->datas[i]);
             concatList->length++;
             i++;
         }
+        //list_display(concatList);
     }
     va_end(pa);
+    /* traitement des param�tres selon la fonction */
 
     return concatList;
 }
