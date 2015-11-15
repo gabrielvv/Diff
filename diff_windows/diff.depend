@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1447530149 source:d:\projetesgi\projet c\diff\diff_windows\main.c
+	<stdio.h>
+	<stdlib.h>
+	"contiguous_list_int.h"
+	"custom_file.h"
+	"linked_list.h"
+	"first_char_of_line.h"
+	<string.h>
+
+1447530149 d:\projetesgi\projet c\diff\diff_windows\contiguous_list_int.h
+
+1447529926 d:\projetesgi\projet c\diff\diff_windows\custom_file.h
+	<stdio.h>
+
+1447530149 d:\projetesgi\projet c\diff\diff_windows\linked_list.h
+
+1447530149 d:\projetesgi\projet c\diff\diff_windows\first_char_of_line.h
+	"linked_list.h"
+	"custom_file.h"
+

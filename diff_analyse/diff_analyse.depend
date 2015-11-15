@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1447617679 source:d:\projetesgi\projet c\diff_analyse\main.c
+	<stdio.h>
+	<stdlib.h>
+
