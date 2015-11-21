@@ -13,6 +13,16 @@ void list_append(t_list* tl,int c){
 
 }
 
+/*char* convert_to_array(t_list* tl){
+
+  int i;
+  char array[tl->length];
+  for(i = 0; i < tl->length; i++){
+
+  }
+  return array;
+}*/
+
 void list_datas_copy(t_list* from, t_list* to){
 
   if(from->length <= to->length){

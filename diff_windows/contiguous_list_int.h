@@ -15,6 +15,7 @@ void list_append(t_list*,int);
 void list_insert(t_list*,int index,int value);
 t_list* list_concat(t_list*,...);
 void list_datas_copy(t_list* from, t_list* to);
+char* convert_to_array(t_list*);
 
 
 #endif
