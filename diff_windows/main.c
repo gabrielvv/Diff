@@ -2,12 +2,11 @@
 #include <stdlib.h>
 #include "contiguous_list_int.h"
 #include "custom_file.h"
-#include "linked_list.h"
 #include <string.h>
 
 t_list** algo(char** lines_content1, char** lines_content2,int lines_count1, int lines_count2);
-char* set_bornes_as_charArray(int, int, char*);
 void print_bornes(int borne_sup,int borne_inf, short end);
+void print_result(char** lines_content1, char** lines_content2, t_list** results);
 
 
 int main(int argc, char* argv[])
@@ -40,7 +39,25 @@ int main(int argc, char* argv[])
   fclose(fp2);
 
 
-  printf("/********************** AFFICHAGE ******************************/\n");
+  printf("/*********************************** AFFICHAGE *******************************************/\n");
+  print_result(myCustomFile->lines_content, myCustomFile2->lines_content, results);
+
+  return 0;
+}
+
+
+void print_bornes(int borne_sup,int borne_inf, short end){
+  if(borne_sup+1 == borne_inf-1){
+    printf("%d", borne_sup+1);
+    end ? printf("\n") : 0 ;
+  }else{
+    printf("%d,%d", borne_sup + 1, borne_inf - 1);
+    end ? printf("\n") : 0 ;
+  }
+}
+
+void print_result(char** lines_content1, char** lines_content2, t_list** results){
+
   int i, j, end, start, diff1, diff2;
   int sub_seq_length = results[0]->length;
   //printf("DEBUG sub_seq_length = %d\n", sub_seq_length);
@@ -67,11 +84,11 @@ int main(int argc, char* argv[])
       print_bornes(borne_sup2, borne_inf2, 1);
       for(j = borne_sup1; j < borne_inf1-1; j++){
         // déclage de -1 parce qu'on va chercher les valeurs de lignes ds un tableau dont l'index commence à 0
-        printf("< %s", myCustomFile->lines_content[j]);
+        printf("< %s", lines_content1[j]);
       }
       printf("---\n");
       for(j = borne_sup2; j < borne_inf2-1; j++){
-        printf("> %s", myCustomFile2->lines_content[j]);
+        printf("> %s", lines_content2[j]);
       }
 
 
@@ -83,7 +100,7 @@ int main(int argc, char* argv[])
       print_bornes(borne_sup2-1, borne_sup2+1, 1);
       for(j = borne_sup1; j < borne_inf1-1; j++){
         // déclage de -1 parce qu'on va chercher les valeurs de lignes ds un tableau dont l'index commence à 0
-        printf("< %s", myCustomFile->lines_content[j]);
+        printf("< %s", lines_content1[j]);
       }
 
     }else if(diff2 > 1 && diff1 == 1){
@@ -93,41 +110,10 @@ int main(int argc, char* argv[])
       print_bornes(borne_sup2, borne_inf2, 1);
       for(j = borne_sup2; j < borne_inf2-1; j++){
         // déclage de -1 parce qu'on va chercher les valeurs de lignes ds un tableau dont l'index commence à 0
-        printf("> %s", myCustomFile2->lines_content[j]);
+        printf("> %s", lines_content2[j]);
       }
     }
   }
-
-
-  return 0;
-}
-
-
-void print_bornes(int borne_sup,int borne_inf, short end){
-  if(borne_sup+1 == borne_inf-1){
-    printf("%d", borne_sup+1);
-    end ? printf("\n") : 0 ;
-  }else{
-    printf("%d,%d", borne_sup + 1, borne_inf - 1);
-    end ? printf("\n") : 0 ;
-  }
-}
-
-
-
-char* set_bornes_as_charArray(int borne_sup,int borne_inf,char* bornes){
-
-  int i;
-  if(borne_sup+1 == borne_inf-1){
-    bornes[0] = '0' + borne_sup + 1;
-    bornes[1] = '\0';
-  }else{
-    bornes[0] = '0' + borne_sup + 1;
-    bornes[1] = ',';
-    bornes[2] = '0' + borne_inf - 1;
-    bornes[3] = '\0';
-  }
-  return bornes;
 }
 
 t_list** algo(char** lines_content1, char** lines_content2, int lines_count1, int lines_count2){
