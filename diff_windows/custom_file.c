@@ -1,6 +1,7 @@
 #include "custom_file.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <wchar.h>
 
 
 c_file* new_c_file(){
@@ -16,21 +17,21 @@ void printContent(c_file* cf){
   printf("/**************************** PRINT CONTENT C_FILE ***********************************/\n");
   printf("Nombre de lignes: %d\n", cf->lines_count);
   for(i=0; i<cf->lines_count; i++){
-    char* str = cf->lines_content[i];
-    printf("Ligne %d de %d caracteres\n", i, cf->char_count_per_line[i]-1);//-1 because char_count_per_line[i] takes the final '\0' into account
-    printf("<%s", str);
+    wchar_t* str = cf->lines_content[i];
+    printf("Ligne %d de %d caracteres\n", i, cf->wchar_t_count_per_line[i]-1);//-1 because wchar_t_count_per_line[i] takes the final '\0' into account
+    wprintf(L"<%s", str);
   }
 
   //printf("/*********************************** FIN ******************************************/\n");
 }
 
 void set_lines_count_and_alloc(c_file* cf, FILE* fp){
-
-  char c;
+  printf("DEBUG: set_lines_count_and_alloc\n");
+  wchar_t c;
   rewind(fp);
-  short previous = 0; //false if previous char is different from '\n'
+  short previous = 0; //false if previous wchar_t is different from '\n'
 
-  while((c = fgetc(fp)) != EOF){
+  while((c = fgetwc(fp)) != WEOF){
     if(c == 10){
       cf->lines_count++ ;
       previous = 1;
@@ -38,70 +39,72 @@ void set_lines_count_and_alloc(c_file* cf, FILE* fp){
       previous = 0;
     }
   }
-  if(c == EOF && previous){
+  if(c == WEOF && previous){
     cf->lines_count--;
     cf->end = 0 ;
   }else{
     cf->end =  1;
   }
 
-  cf->lines_content = malloc(sizeof(char*)*cf->lines_count);
-  cf->char_count_per_line = malloc(sizeof(int)*cf->lines_count);
+  cf->lines_content = malloc(sizeof(wchar_t*)*cf->lines_count);
+  cf->wchar_t_count_per_line = malloc(sizeof(int)*cf->lines_count);
 }
 
-void set_char_count_per_line(c_file* cf, FILE* fp){
-
-  int i, char_count;
-  char c;
+void set_wchar_t_count_per_line(c_file* cf, FILE* fp){
+  printf("DEBUG: set_wchar_t_count_per_line\n");
+  int i, wchar_t_count;
+  wchar_t c;
   rewind(fp);
 
-  char_count = i = 0;
+  wchar_t_count = i = 0;
 
-  while((c = fgetc(fp)) != EOF){
-    char_count++;
+  while((c = fgetwc(fp)) != WEOF){
+    wchar_t_count++;
     if(c == 10){
-      cf->char_count_per_line[i] = ++char_count;
+      cf->wchar_t_count_per_line[i] = ++wchar_t_count;
       i++;
-      char_count = 0;
+      wchar_t_count = 0;
     }else if(c == 13){}
 
   }
-  cf->char_count_per_line[i] = ++char_count;
+  cf->wchar_t_count_per_line[i] = ++wchar_t_count;
 
 }
 
 void set_lines_content(c_file* cf, FILE* fp){
-
+  printf("DEBUG: set_lines_content\n");
   int i,j;
-  char c;
+  wchar_t c;
   rewind(fp);
 
   for(i = 0; i < cf->lines_count; i++){
 
     if(i == cf->lines_count-1 && cf->end){
     /******************* "\ No newline at end of file" scenario **********************/
-      char str[] = "\n\\ No newline at end of file\n"; // 29 characters
-      int totalChar = cf->char_count_per_line[i]+30;
-      cf->lines_content[i] = malloc(sizeof(char)*totalChar);
+      wchar_t str[] = L"\n\\ No newline at end of file\n"; // 29 wchar_tacters
+      int totalChar = (cf->wchar_t_count_per_line[i]+30);
+      cf->lines_content[i] = malloc(sizeof(wchar_t)*totalChar);
 
-      for(j = 0; j < cf->char_count_per_line[i]; j++){
-        if((c = fgetc(fp)) != EOF){
-          printf("DEBUG: %c\n",c);
+      for(j = 0; j < cf->wchar_t_count_per_line[i]-1; j++){
+        if((c = fgetwc(fp)) != WEOF){
+          //printf("DEBUG: %lc\n",c);
           cf->lines_content[i][j] = c;
         }
       }
-      printf("DEBUG j = %d, cf->char_count_per_line[i] = %d",j,cf->char_count_per_line[i]);
+      printf("DEBUG j = %d, cf->wchar_t_count_per_line[i] = %d\n",j,cf->wchar_t_count_per_line[i]);
       for(; j < totalChar; j++){
-          cf->lines_content[i][j] = str[j - cf->char_count_per_line[i]];
+          //printf("DEBUG j: %d\n",j);
+          cf->lines_content[i][j] = str[j - cf->wchar_t_count_per_line[i]-1];
       }
 
-      cf->lines_content[i][totalChar-1] = '\0';
+      cf->lines_content[i][totalChar-1] = L'\0';
+      //wprintf("DEBUG last line: %d\n",j);
     }else{
 
-      cf->lines_content[i] = malloc(sizeof(char)*cf->char_count_per_line[i]);
-      for(j = 0; j < cf->char_count_per_line[i]-1; j++){
-        if((c = fgetc(fp)) != EOF){
-          printf("DEBUG: %c\n",c);
+      cf->lines_content[i] = malloc(sizeof(wchar_t)*cf->wchar_t_count_per_line[i]);
+      for(j = 0; j < cf->wchar_t_count_per_line[i]-1; j++){
+        if((c = fgetwc(fp)) != WEOF){
+          //printf("DEBUG: %lc\n",c);
           cf->lines_content[i][j] = c;
         }
       }
@@ -114,7 +117,7 @@ void set_lines_content(c_file* cf, FILE* fp){
 
 void setParams(c_file* cf, FILE* fp){
   set_lines_count_and_alloc(cf,fp);
-  set_char_count_per_line(cf,fp);
+  set_wchar_t_count_per_line(cf,fp);
   set_lines_content(cf,fp);
 }
 
@@ -125,6 +128,6 @@ void custom_file_free(c_file* cf){
     free(cf->lines_content[i]);
   }
   free(cf->lines_content);
-  free(cf->char_count_per_line);
+  free(cf->wchar_t_count_per_line);
   free(cf);
 }

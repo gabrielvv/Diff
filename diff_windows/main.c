@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <wchar.h>
 #include "contiguous_list_int.h"
 #include "custom_file.h"
 
 
-t_list** subsequence_research(char** lines_content1, char** lines_content2,int lines_count1, int lines_count2);
+t_list** subsequence_research(wchar_t** lines_content1, wchar_t** lines_content2,int lines_count1, int lines_count2);
 void print_bounds(int upper_bound,int lower_bound, short end);
-void print_result(char** lines_content1, char** lines_content2, t_list** results);
+void print_result(wchar_t** lines_content1, wchar_t** lines_content2, t_list** results);
 
 
 int main(int argc, char* argv[])
@@ -16,22 +17,27 @@ int main(int argc, char* argv[])
       printf("Nombre d' arguments insuffisant");
       return 1;
   }
-
+  printf("DEBUG: start\n");
   FILE *fp1, *fp2;
+  printf("DEBUG: fopen\n");
   fp1 = fopen(argv[1], "r");
+  printf("DEBUG: new_c_file\n");
   c_file *myCustomFile = new_c_file();
+  printf("DEBUG: setparams\n");
   setParams(myCustomFile, fp1);
-  //printContent(myCustomFile);
+  printf("DEBUG: printContent\n");
+  printContent(myCustomFile);
   fclose(fp1);
 
 
   fp2 = fopen(argv[2], "r");
   c_file *myCustomFile2 = new_c_file();
   setParams(myCustomFile2, fp2);
-  //printContent(myCustomFile2);
+  printContent(myCustomFile2);
   fclose(fp2);
 
   t_list** results = malloc(sizeof(t_list*)*2);
+  printf("DEBUG: subsequence research\n");
   results = subsequence_research(myCustomFile->lines_content, myCustomFile2->lines_content, myCustomFile->lines_count, myCustomFile2->lines_count);
 
   printf("/*********************************** SUBSEQUENCES  ******************************************/\n");
@@ -63,7 +69,7 @@ void print_bounds(int upper_bound,int lower_bound, short end){
   }
 }
 
-void print_result(char** lines_content1, char** lines_content2, t_list** results){
+void print_result(wchar_t** lines_content1, wchar_t** lines_content2, t_list** results){
 
   int i, j, diff1, diff2;
   int sub_seq_length = results[0]->length;
@@ -90,11 +96,11 @@ void print_result(char** lines_content1, char** lines_content2, t_list** results
       print_bounds(upper_bound2, lower_bound2, 1);
       for(j = upper_bound1; j < lower_bound1-1; j++){
         // -1 shift because we're getting string values from a 2 dimensions array whose index starts from 0
-        printf("< %s", lines_content1[j]);
+        wprintf(L"< %ls", (wchar_t*)lines_content1[j]);
       }
       printf("---\n");
       for(j = upper_bound2; j < lower_bound2-1; j++){
-        printf("> %s", lines_content2[j]);
+        wprintf(L"> %ls", (wchar_t*)lines_content2[j]);
       }
 
 
@@ -106,7 +112,7 @@ void print_result(char** lines_content1, char** lines_content2, t_list** results
       print_bounds(upper_bound2-1, upper_bound2+1, 1);
       for(j = upper_bound1; j < lower_bound1-1; j++){
         // -1 shift because we're getting string values from a 2 dimensions array whose index starts from 0
-        printf("< %s", lines_content1[j]);
+        wprintf(L"< %ls", lines_content1[j]);
       }
 
     }else if(diff2 > 1 && diff1 == 1){
@@ -116,13 +122,13 @@ void print_result(char** lines_content1, char** lines_content2, t_list** results
       print_bounds(upper_bound2, lower_bound2, 1);
       for(j = upper_bound2; j < lower_bound2-1; j++){
         // -1 shift because we're getting string values from a 2 dimensions array whose index starts from 0
-        printf("> %s", lines_content2[j]);
+        wprintf(L"> %ls", lines_content2[j]);
       }
     }
   }
 }
 
-t_list** subsequence_research(char** lines_content1, char** lines_content2, int lines_count1, int lines_count2){
+t_list** subsequence_research(wchar_t** lines_content1, wchar_t** lines_content2, int lines_count1, int lines_count2){
 
   int maxlength = (lines_count2 >= lines_count1 ? lines_count1+1 : lines_count2+1);
 
@@ -132,7 +138,7 @@ t_list** subsequence_research(char** lines_content1, char** lines_content2, int 
   t_list* tmp_list2 = list_create(maxlength);
 
   int i, j, store, offset, start, index;
-  char* str;
+  wchar_t* str;
   store = start = offset = 0;
 
   /****************** SUBSEQUENCE RESEARCH : fill result_list1 and result_list2 with line's indexes from file1 and file2 longest common subsequence ********************/
@@ -143,7 +149,7 @@ t_list** subsequence_research(char** lines_content1, char** lines_content2, int 
 
       for(j = offset; j < lines_count1; j++){
 
-        if(strcmp(str,lines_content1[j]) == 0){
+        if(strcmp((char*)str,(char*)lines_content1[j]) == 0){
 
           if(store){
             /** REPLACE **/

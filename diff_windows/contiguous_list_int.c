@@ -1,6 +1,7 @@
 #include "contiguous_list_int.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <wchar.h>
 #include <stdarg.h>
 
 void list_append(t_list* tl,int c){
@@ -13,10 +14,10 @@ void list_append(t_list* tl,int c){
 
 }
 
-char* convert_to_array(t_list* tl, char* array){
+wchar_t* convert_to_array(t_list* tl, wchar_t* array){
 
   int i;
-  array = malloc(sizeof(char)*tl->length);
+  array = malloc(sizeof(wchar_t)*tl->length);
   for(i = 0; i < tl->length; i++){
 
   }
