@@ -13,15 +13,15 @@ void list_append(t_list* tl,int c){
 
 }
 
-/*char* convert_to_array(t_list* tl){
+char* convert_to_array(t_list* tl, char* array){
 
   int i;
-  char array[tl->length];
+  array = malloc(sizeof(char)*tl->length);
   for(i = 0; i < tl->length; i++){
 
   }
   return array;
-}*/
+}
 
 void list_datas_copy(t_list* from, t_list* to){
 
@@ -39,6 +39,11 @@ t_list* list_create(unsigned int max){
     tl->length = 0;
     tl->max = max;
     return tl;
+}
+
+void list_free(t_list* tl){
+  free(tl->datas);
+  free(tl);
 }
 
 void list_display(t_list* tl){

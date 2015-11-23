@@ -3,9 +3,8 @@
 #include <stdio.h>
 
 
-c_file* new_c_file(FILE* fp){
+c_file* new_c_file(){
   c_file* cf = malloc(sizeof(c_file));
-  cf->file = fp;
   cf->lines_count = 1;
   cf->end = 0;
   return cf;
@@ -18,21 +17,18 @@ void printContent(c_file* cf){
   printf("Nombre de lignes: %d\n", cf->lines_count);
   for(i=0; i<cf->lines_count; i++){
     char* str = cf->lines_content[i];
-    printf("Ligne %d de %d caracteres\n", i, cf->char_count_per_line[i]-1);//-1 on  ne compte pas le '\0'
+    printf("Ligne %d de %d caracteres\n", i, cf->char_count_per_line[i]-1);//-1 because char_count_per_line[i] takes the final '\0' into account
     printf("<%s", str);
   }
-  /*if(!cf->end)
-    printf("\n\\ No newline at end of file\n");*/
 
   //printf("/*********************************** FIN ******************************************/\n");
 }
 
-void set_lines_count_and_alloc(c_file* cf){
+void set_lines_count_and_alloc(c_file* cf, FILE* fp){
 
   char c;
-  FILE* fp = cf->file;
   rewind(fp);
-  short previous = 0; //false si previous char is different from '\n'
+  short previous = 0; //false if previous char is different from '\n'
 
   while((c = fgetc(fp)) != EOF){
     if(c == 10){
@@ -53,14 +49,13 @@ void set_lines_count_and_alloc(c_file* cf){
   cf->char_count_per_line = malloc(sizeof(int)*cf->lines_count);
 }
 
-void set_char_count_per_line(c_file* cf){
+void set_char_count_per_line(c_file* cf, FILE* fp){
 
   int i, char_count;
   char c;
-  FILE* fp = cf->file;
   rewind(fp);
 
-  char_count = i = 0; //représente l'index de ligne
+  char_count = i = 0;
 
   while((c = fgetc(fp)) != EOF){
     char_count++;
@@ -75,28 +70,29 @@ void set_char_count_per_line(c_file* cf){
 
 }
 
-void set_lines_content(c_file* cf){
+void set_lines_content(c_file* cf, FILE* fp){
 
-  int i,j,h;
+  int i,j;
   char c;
-  FILE* fp = cf->file;
   rewind(fp);
 
   for(i = 0; i < cf->lines_count; i++){
 
     if(i == cf->lines_count-1 && cf->end){
-      char str[] = "\n\\ No newline at end of file\n";
+    /******************* "\ No newline at end of file" scenario **********************/
+      char str[] = "\n\\ No newline at end of file\n"; // 29 characters
       int totalChar = cf->char_count_per_line[i]+30;
       cf->lines_content[i] = malloc(sizeof(char)*totalChar);
 
-      for(j = 0; j < cf->char_count_per_line[i]-1; j++){
+      for(j = 0; j < cf->char_count_per_line[i]; j++){
         if((c = fgetc(fp)) != EOF){
+          printf("DEBUG: %c\n",c);
           cf->lines_content[i][j] = c;
         }
       }
-
-      for(h = cf->char_count_per_line[i]-1; h < totalChar-1; h++){
-          cf->lines_content[i][h] = str[h-cf->char_count_per_line[i]];
+      printf("DEBUG j = %d, cf->char_count_per_line[i] = %d",j,cf->char_count_per_line[i]);
+      for(; j < totalChar; j++){
+          cf->lines_content[i][j] = str[j - cf->char_count_per_line[i]];
       }
 
       cf->lines_content[i][totalChar-1] = '\0';
@@ -105,38 +101,30 @@ void set_lines_content(c_file* cf){
       cf->lines_content[i] = malloc(sizeof(char)*cf->char_count_per_line[i]);
       for(j = 0; j < cf->char_count_per_line[i]-1; j++){
         if((c = fgetc(fp)) != EOF){
+          printf("DEBUG: %c\n",c);
           cf->lines_content[i][j] = c;
         }
       }
 
       cf->lines_content[i][j] = '\0';
-      //Permet de déterminer de quelle façon se termine le fichier
     }
   }
 
 }
 
-void setParams(c_file* cf){
-  set_lines_count_and_alloc(cf);
-  set_char_count_per_line(cf);
-  set_lines_content(cf);
-
+void setParams(c_file* cf, FILE* fp){
+  set_lines_count_and_alloc(cf,fp);
+  set_char_count_per_line(cf,fp);
+  set_lines_content(cf,fp);
 }
 
-short line_comp(c_file* cf1, c_file* cf2, int index){
-  if(index > cf1->lines_count || index > cf2->lines_count){
-    return 1;
+void custom_file_free(c_file* cf){
+
+  int i;
+  for(i=0; i < cf->lines_count; i++){
+    free(cf->lines_content[i]);
   }
-  else if (cf1->char_count_per_line[index] != cf2->char_count_per_line[index]){
-    return 1;
-  }else{
-    int i;
-    rewind(cf1->file);
-    rewind(cf2->file);
-    for(i = 0; i < index; i++){
-      if(fgetc(cf1->file) != fgetc(cf2->file))
-        return 1;
-    }
-  }
-  return 0;
+  free(cf->lines_content);
+  free(cf->char_count_per_line);
+  free(cf);
 }
