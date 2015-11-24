@@ -148,11 +148,11 @@ t_list** subsequence_research(wchar_t** lines_content1, wchar_t** lines_content2
       str = lines_content2[i];
 
       for(j = offset; j < lines_count1; j++){
-
+        printf("DEBUG: strcmp %ls vs %ls\n",str, lines_content1[j]);
         if(strcmp((char*)str,(char*)lines_content1[j]) == 0){
 
           if(store){
-            /** REPLACE **/
+            /******************** REPLACE **************************/
             index = ((int)(tmp_list2->length-1) < 0 ? 0 : (int)(tmp_list2->length-1));
 
             tmp_list1->datas[index] = j+1;//subseq file1
@@ -199,6 +199,7 @@ t_list** subsequence_research(wchar_t** lines_content1, wchar_t** lines_content2
 
   list_insert(result_list1, 0, 0);
   list_insert(result_list2, 0, 0);
+  printf("DEBUG final list_append\n");
   list_append(result_list1, lines_count1+1);
   list_append(result_list2, lines_count2+1);
 

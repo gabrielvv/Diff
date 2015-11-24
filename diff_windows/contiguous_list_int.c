@@ -5,7 +5,7 @@
 #include <stdarg.h>
 
 void list_append(t_list* tl,int c){
-
+    printf("DEBUG: list append\t tl->length = %d\t tl->max = %d\t index: %d\n", tl->length, tl->max, c);
     if(tl->length < tl->max && tl){
         tl->datas[tl->length++] = c;
     }else{
