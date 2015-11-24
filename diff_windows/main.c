@@ -148,8 +148,8 @@ t_list** subsequence_research(wchar_t** lines_content1, wchar_t** lines_content2
       str = lines_content2[i];
 
       for(j = offset; j < lines_count1; j++){
-        printf("DEBUG: strcmp %ls vs %ls\n",str, lines_content1[j]);
-        if(strcmp((char*)str,(char*)lines_content1[j]) == 0){
+        //printf("DEBUG: strcmp %ls vs %ls\n",str, lines_content1[j]);
+        if(wcscmp(str,lines_content1[j]) == 0){
 
           if(store){
             /******************** REPLACE **************************/
