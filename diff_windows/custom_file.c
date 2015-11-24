@@ -81,20 +81,22 @@ void set_lines_content(c_file* cf, FILE* fp){
 
     if(i == cf->lines_count-1 && cf->end){
     /******************* "\ No newline at end of file" scenario **********************/
-      wchar_t str[] = L"\n\\ No newline at end of file\n"; // 29 wchar_tacters
-      int totalChar = (cf->wchar_t_count_per_line[i]+30);
+      wchar_t str[] = L"\n\\ No newline at end of file\n"; // 29 characters
+
+      int wchar_count = cf->wchar_t_count_per_line[i];
+      int totalChar = (wchar_count+30);
       cf->lines_content[i] = malloc(sizeof(wchar_t)*totalChar);
 
-      for(j = 0; j < cf->wchar_t_count_per_line[i]-1; j++){
+      for(j = 0; j < wchar_count-1; j++){
         if((c = fgetwc(fp)) != WEOF){
           //printf("DEBUG: %lc\n",c);
           cf->lines_content[i][j] = c;
         }
       }
-      printf("DEBUG j = %d, cf->wchar_t_count_per_line[i] = %d\n",j,cf->wchar_t_count_per_line[i]);
-      for(; j < totalChar; j++){
+      //printf("DEBUG j = %d, cf->wchar_t_count_per_line[i] = %d\n",j,wchar_count);
+      for(; j < totalChar-1; j++){
           //printf("DEBUG j: %d\n",j);
-          cf->lines_content[i][j] = str[j - cf->wchar_t_count_per_line[i]-1];
+          cf->lines_content[i][j] = str[j - (wchar_count-1)];
       }
 
       cf->lines_content[i][totalChar-1] = L'\0';
