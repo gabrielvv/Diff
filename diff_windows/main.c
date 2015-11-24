@@ -131,7 +131,7 @@ void print_result(wchar_t** lines_content1, wchar_t** lines_content2, t_list** r
 t_list** subsequence_research(wchar_t** lines_content1, wchar_t** lines_content2, int lines_count1, int lines_count2){
 
   int maxlength = (lines_count2 >= lines_count1 ? lines_count1+1 : lines_count2+1);
-
+  printf("DEBUG:  maxlength = %d\n", maxlength);
   t_list* result_list1 = list_create(maxlength);
   t_list* result_list2 = list_create(maxlength);
   t_list* tmp_list1 = list_create(maxlength);

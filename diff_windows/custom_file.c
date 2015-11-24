@@ -84,7 +84,7 @@ void set_lines_content(c_file* cf, FILE* fp){
       wchar_t str[] = L"\n\\ No newline at end of file\n"; // 29 characters
 
       int wchar_count = cf->wchar_t_count_per_line[i];
-      int totalChar = (wchar_count+30);
+      int totalChar = (wchar_count + 30);
       cf->lines_content[i] = malloc(sizeof(wchar_t)*totalChar);
 
       for(j = 0; j < wchar_count-1; j++){
