@@ -67,7 +67,7 @@ void set_char_count_per_line(c_file* cf, FILE* fp){
 
   }
   cf->char_count_per_line[i] = ++char_count;
-
+  //printf("DEBUG: char_count[%d] = %d\n", i, char_count);
 }
 
 void set_lines_content(c_file* cf, FILE* fp){
@@ -80,19 +80,21 @@ void set_lines_content(c_file* cf, FILE* fp){
 
     if(i == cf->lines_count-1 && cf->end){
     /******************* "\ No newline at end of file" scenario **********************/
+      int char_count = cf->char_count_per_line[i];
       char str[] = "\n\\ No newline at end of file\n"; // 29 characters
-      int totalChar = cf->char_count_per_line[i]+30;
+      int totalChar = char_count + 30;
       cf->lines_content[i] = malloc(sizeof(char)*totalChar);
 
-      for(j = 0; j < cf->char_count_per_line[i]; j++){
+      for(j = 0; j < char_count - 1; j++){
         if((c = fgetc(fp)) != EOF){
-          printf("DEBUG: %c\n",c);
+          //printf("DEBUG: %c\n",c);
           cf->lines_content[i][j] = c;
         }
       }
-      printf("DEBUG j = %d, cf->char_count_per_line[i] = %d",j,cf->char_count_per_line[i]);
-      for(; j < totalChar; j++){
-          cf->lines_content[i][j] = str[j - cf->char_count_per_line[i]];
+      //printf("DEBUG j = %d, cf->char_count_per_line[i] = %d\n",j,char_count);
+      for(; j < totalChar - 1; j++){
+          //printf("DEBUG: j = %d\n", j);
+          cf->lines_content[i][j] = str[j - (char_count-1)];
       }
 
       cf->lines_content[i][totalChar-1] = '\0';
@@ -101,7 +103,7 @@ void set_lines_content(c_file* cf, FILE* fp){
       cf->lines_content[i] = malloc(sizeof(char)*cf->char_count_per_line[i]);
       for(j = 0; j < cf->char_count_per_line[i]-1; j++){
         if((c = fgetc(fp)) != EOF){
-          printf("DEBUG: %c\n",c);
+          //printf("DEBUG: %c\n",c);
           cf->lines_content[i][j] = c;
         }
       }
