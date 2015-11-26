@@ -21,14 +21,13 @@ void printContent(c_file* cf){
     printf("<%s", str);
   }
 
-  //printf("/*********************************** FIN ******************************************/\n");
 }
 
 void set_lines_count_and_alloc(c_file* cf, FILE* fp){
 
   char c;
   rewind(fp);
-  short previous = 0; //false if previous char is different from '\n'
+  short previous = 0; /* false if previous char is different from '\n' */
 
   while((c = fgetc(fp)) != EOF){
     if(c == 10){
@@ -53,21 +52,26 @@ void set_char_count_per_line(c_file* cf, FILE* fp){
 
   int i, char_count;
   char c;
+  short previous = 0; /* true only if previous char is '\n' */
+
   rewind(fp);
 
   char_count = i = 0;
 
+  /******* LE BOUT DE CODE QUI POSE PROBLEME ****************/
   while((c = fgetc(fp)) != EOF){
     char_count++;
+    previous = 0;
     if(c == 10){
       cf->char_count_per_line[i] = ++char_count;
       i++;
       char_count = 0;
-    }else if(c == 13){}
-
+      previous = 1;
+    }  
   }
-  cf->char_count_per_line[i] = ++char_count;
-  //printf("DEBUG: char_count[%d] = %d\n", i, char_count);
+  if(!previous){cf->char_count_per_line[i] = ++char_count;}
+  /***********************************************************/
+  printf("DEBUG: lines_count: %d\tchar_count[%d] = %d\n", cf->lines_count, i, char_count);
 }
 
 void set_lines_content(c_file* cf, FILE* fp){

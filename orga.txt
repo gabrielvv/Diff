@@ -13,6 +13,5 @@ Semaine2 ->
 --ignore
 ...
 -r
--N
 -y
 (-n)
