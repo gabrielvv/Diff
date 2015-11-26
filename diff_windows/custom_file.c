@@ -67,11 +67,11 @@ void set_char_count_per_line(c_file* cf, FILE* fp){
       i++;
       char_count = 0;
       previous = 1;
-    }  
+    }
   }
   if(!previous){cf->char_count_per_line[i] = ++char_count;}
   /***********************************************************/
-  printf("DEBUG: lines_count: %d\tchar_count[%d] = %d\n", cf->lines_count, i, char_count);
+  //printf("DEBUG: lines_count: %d\tchar_count[%d] = %d\n", cf->lines_count, i, char_count);
 }
 
 void set_lines_content(c_file* cf, FILE* fp){

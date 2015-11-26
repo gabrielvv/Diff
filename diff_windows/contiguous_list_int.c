@@ -8,7 +8,7 @@ void list_append(t_list* tl,int c){
     if(tl->length < tl->max && tl){
         tl->datas[tl->length++] = c;
     }else{
-        printf("DEBUG: can't list_append\n");
+        //printf("DEBUG: can't list_append\n");
     }
 
 }

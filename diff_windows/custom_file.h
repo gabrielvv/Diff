@@ -1,7 +1,6 @@
+#ifndef CUSTOM_FILE_INCLUDED
+#define CUSTOM_FILE_INCLUDED
 #include <stdio.h>
-
-#ifndef CUSTOM_FILE
-#define CUSTOM_FILE
 
 /**************************************************************
 * STRUCTURE custom_file
@@ -92,4 +91,4 @@ void printContent(c_file* cf);
 ***************************************************************/
 void custom_file_free(c_file* cf);
 
-#endif
+#endif //CUSTOM_FILE_INCLUDED

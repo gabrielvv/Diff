@@ -1,5 +1,5 @@
-#ifndef CONTIGUOUS_LIST
-#define CONTIGUOUS_LIST
+#ifndef CONTIGUOUS_LIST_INCLUDED
+#define CONTIGUOUS_LIST_INCLUDED
 
 /**************************************************************
 * STRUCTURE s_list
