@@ -18,7 +18,7 @@
 int main(int argc, char* argv[])
 {
 
-  char *Param="";
+  char *options="";
   char *Source1, *Source2;
 
   if(argc == 2 && (strcmp(argv[1], "--help") == 0)){
@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
   else if(argc == 4){
       Source1 = argv[argc-2];
       Source2 = argv[argc-1];     // files or folders to compare
-      Param = argv[1];
+      options = argv[1];
   }
   else if(argc > 4 ){
       printf("Usage: diff [OPTION] FILE1 FILE2\n  You can use one option.\n  --help Output this help.\n\nIf FILE1 or FILE2 is '-', read standard input.");
@@ -52,13 +52,12 @@ int main(int argc, char* argv[])
     int cpt2=0;
     cpt1 = scan_folder(Source1, 0, list1);
     cpt2 = scan_folder(Source2, 0, list2);
-    analyze(list1, list2, Source1, Source2, cpt1, cpt2);
-    analyzereverse(list1, list2, Source1, Source2, cpt1, cpt2);
+    analyzeDirectories(list1, list2, Source1, Source2, cpt1, cpt2);
+    analyzeDirectoriesReverse(list1, list2, Source1, Source2, cpt1, cpt2);
   }
   //printf("Source1: %s\tSource2: %s\n", Source1, Source2);
   else{
-
-    analyzeAndPrint(Source1, Source2, Param);
+    analyzeFilesAndPrint(Source1, Source2, options);
   }
 
   return 0;

@@ -5,18 +5,18 @@
 
 
 /********************************************************************
-* Compare two string  ------------> Use to verify param's name
+* Compare two string  ------------> Use to verify options's name
 * Input :   2 Strings
 * Output : 0 ->identical     -1->different
 **********************************************************************/
-int compare(char*NameFonction,char*param)
+int compare(char*NameFonction,char*options)
 {
-    int sizeStringFonction=strlen(NameFonction),sizeStringParam=strlen(param),i;
+    int sizeStringFonction=strlen(NameFonction),sizeStringoptions=strlen(options),i;
 
-    if (sizeStringFonction!=sizeStringParam)
+    if (sizeStringFonction!=sizeStringoptions)
         return -1;
     for(i=0;i<sizeStringFonction;i++){
-        if(NameFonction[i]!=param[i])
+        if(NameFonction[i]!=options[i])
             return -1;
 
     }
@@ -24,16 +24,16 @@ int compare(char*NameFonction,char*param)
 }
 
 /******************************************************
-* Compare two strings with param
-* Input : 3 Strings (2 lines + param)
+* Compare two strings with options
+* Input : 3 Strings (2 lines + options)
 * Output : 0 ->identical     -1->different
 ****************************************************/
-int compareString(char *lineA,char *lineB,char *param){
+int compareString(char *lineA,char *lineB,char *options){
 
     int max=0,i,index1=0,index2=0,changeIndex1=0,changeIndex2=0,size1=strlen(lineA),size2=strlen(lineB);
 
     ///Option ignore all space (- w)
-    if(compare(param,"-w") == 0 || compare(param,"--ignore-all-space") == 0){
+    if(compare(options,"-w") == 0 || compare(options,"--ignore-all-space") == 0){
         if(size1>size2)
             max=size1;
         else

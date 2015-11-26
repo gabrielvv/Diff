@@ -105,7 +105,7 @@ int count_path(char* dirname,int cpt)
 * FUNCTION analyze
 * analyze the first struct
 ***************************************************************/
-int analyze(c_String** array1,c_String** array2,char* argv1,char* argv2,int cpt1,int cpt2){
+int analyzeDirectories(c_String** array1,c_String** array2,char* argv1,char* argv2,int cpt1,int cpt2){
 
 		//printf("analyze\n");
     int i=0;
@@ -142,7 +142,7 @@ int analyze(c_String** array1,c_String** array2,char* argv1,char* argv2,int cpt1
         //sub2[taille2] = '/0';
 
         if(strcmp(sub1,sub2) == 0){
-						//analyzeAndPrint(array1[i]->datas, array2[j]->datas,"");
+						//analyzeFilesAndPrint(array1[i]->datas, array2[j]->datas,"");
             exist=3;
         }
 					free(sub2);
@@ -159,12 +159,12 @@ int analyze(c_String** array1,c_String** array2,char* argv1,char* argv2,int cpt1
 }
 
 /**************************************************************
-* FUNCTION analyzereverse
+* FUNCTION analyzeDirectoriesReverse
 * analyze the second struct
 ***************************************************************/
-int analyzereverse(c_String** array1,c_String** array2,char* argv1,char* argv2,int cpt1,int cpt2){
+int analyzeDirectoriesReverse(c_String** array1,c_String** array2,char* argv1,char* argv2,int cpt1,int cpt2){
 
-		//printf("analyzereverse\n");
+		//printf("analyzeDirectoriesReverse\n");
     int i=0;
     int j=0;
     int c=0;
@@ -217,7 +217,7 @@ int analyzereverse(c_String** array1,c_String** array2,char* argv1,char* argv2,i
 enum bool {FALSE, TRUE};
 
 /**************************************************************
-* FUNCTION analyzeAndPrint
+* FUNCTION analyzeFilesAndPrint
 * ------------------------------------------------------------
 * analyze two files and display their differences
 *
@@ -226,7 +226,7 @@ enum bool {FALSE, TRUE};
 * options   : string containing one character per option
 *
 ***************************************************************/
-void analyzeAndPrint(char* fileName1, char* fileName2, char* options){
+void analyzeFilesAndPrint(char* fileName1, char* fileName2, char* options){
 
   int i;
   enum bool s, w, y;
@@ -257,13 +257,15 @@ void analyzeAndPrint(char* fileName1, char* fileName2, char* options){
   //printContent(myCustomFile2);
   fclose(fp2);
 
-  t_list** results; /* freed at the end of analyzeAndPrint */
+  t_list** results; /* freed at the end of analyzeFilesAndPrint */
   results = subsequence_research(myCustomFile->lines_content, myCustomFile2->lines_content, myCustomFile->lines_count, myCustomFile2->lines_count, options);
 
-
-  if(results[0]->length - 2 == myCustomFile->lines_count && results[1]->length - 2 == myCustomFile2->lines_count && myCustomFile->end == myCustomFile2->end){
+	//printf("DEBUG: results[0]->length - 1 = %d\nmyCustomFile->lines_count = %d\nresults[1]->length - 1 = %d\nmyCustomFile2->lines_count = %d\n myCustomFile->end = %d\nmyCustomFile2->end = %d\ns = %d\n",results[0]->length - 1, myCustomFile->lines_count, results[1]->length - 1, myCustomFile2->lines_count, myCustomFile->end, myCustomFile2->end, s);
+  if((results[0]->length - 1 == myCustomFile->lines_count) && (results[1]->length - 1 == myCustomFile2->lines_count) && (myCustomFile->end == myCustomFile2->end) && s){
       printf("Files %s and %s are identical", fileName1, fileName2);
-  }else{
+  }else if((results[0]->length - 1 == myCustomFile->lines_count) && (results[1]->length - 1 == myCustomFile2->lines_count) && (myCustomFile->end == myCustomFile2->end)){
+			/*Nothing happend*/
+	}	else{
     print_result(myCustomFile->lines_content, myCustomFile2->lines_content, results, options);
   }
 
@@ -390,7 +392,14 @@ void print_result(char** lines_content1, char** lines_content2, t_list** results
 ***************************************************************************************/
 t_list** subsequence_research(char** lines_content1, char** lines_content2, int lines_count1, int lines_count2, char* options){
 
-  int maxlength = (lines_count2 >= lines_count1 ? lines_count1+1 : lines_count2+1);
+  int maxlength = (lines_count2 >= lines_count1 ? lines_count1 + 1 : lines_count2 + 1);
+	/************************************************************************
+	* (+ 1) POUR POUVOIR AJOUTER LE 0 EN DEBUT DE SOUS-SEQUENCE
+	* ON POURRAIT AJOUTER 2 POUR L'AJOUT DE (LINES_COUNT + 1)
+	* EN FIN DE SEQUENCE MAIS CA MARCHE (MIEUX?) AUSSI COMME CA
+	* DANS LE CAS OU LA LCS EST AUSSI LONGUE QUE LE NOMBRE DE LIGNE
+	* cf. fin de fonction et fonction d'affichage des fichiers similaires
+	*************************************************************************/
 
   t_list* result_list1 = list_create(maxlength);
   t_list* result_list2 = list_create(maxlength);
@@ -402,7 +411,7 @@ t_list** subsequence_research(char** lines_content1, char** lines_content2, int 
   store = start = offset = 0;
 
   /****************** SUBSEQUENCE RESEARCH : fill result_list1 and result_list2 with line's indexes from file1 and file2 longest common subsequence ********************/
-  while(lines_count2-start > result_list2->length){
+  while(lines_count2 - start > result_list2->length){
 
     for(i = start; i < lines_count2; i++){
       str = lines_content2[i];
@@ -456,10 +465,10 @@ t_list** subsequence_research(char** lines_content1, char** lines_content2, int 
   list_free(tmp_list1);
   list_free(tmp_list2);
 
-  list_insert(result_list1, 0, 0);
-  list_insert(result_list2, 0, 0);
-  list_append(result_list1, lines_count1+1);
-  list_append(result_list2, lines_count2+1);
+  list_insert(result_list1, 0, 0); /* NE FAIS RIEN SI LIST DEJA REMPLIE => DANS LES FAITS CA N'ARRIVE JAMAIS*/
+  list_insert(result_list2, 0, 0); /* NE FAIS RIEN SI LIST DEJA REMPLIE  => DANS LES FAITS CA N'ARRIVE JAMAIS*/
+  list_append(result_list1, lines_count1 + 1); /* NE FAIS RIEN SI LIST DEJA REMPLIE => ARRIVE DS LE CAS DE 2 FICHIERS IDENTIQUES */
+  list_append(result_list2, lines_count2 + 1); /* NE FAIS RIEN SI LIST DEJA REMPLIE => ARRIVE DS LE CAS DE 2 FICHIERS IDENTIQUES*/
 
   t_list** results = malloc(sizeof(t_list*)*2);
   results[0] = result_list1;
