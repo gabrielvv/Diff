@@ -62,15 +62,10 @@ int scan_folder(char* dirname,int i,c_String** list)
 			i = scan_folder(real_path,i,list);
 		}
 		else{
-                list[i] =string_create(string_length(real_path));
-                string_append(list[i],real_path);
-                //string_display(list[i]);
-                i++;
-                //printf("Fichier: %s\n",real_path);
-                //printf("Path : %s\n",path);
+      list[i] =string_create(string_length(real_path));
+      string_append(list[i],real_path);
+      i++;
 		}
-
-                       //printf("%s,%s\n",dirname,entity->d_name,entity);
 	}
 	closedir(folder);
 	return i;
@@ -99,9 +94,7 @@ int count_path(char* dirname,int cpt)
 			count_path(real_path,cpt);
 		}
 		else{
-                       cpt++;
-                       //printf("Fichier: %s\n",real_path);
-                       //printf("Path : %s\n",path);
+      cpt++;
 		}
 	}
 	closedir(folder);
@@ -129,11 +122,9 @@ int analyze(c_String** array1,c_String** array2,char* argv1,char* argv2,int cpt1
         taille = ((array1[i]->length)-(length_argv1));
         //printf("passage %d\n",taille);
         char* sub1 = calloc(sizeof(char)*taille, sizeof(char));
-        //printf("len %d\n",array1[i]->length);
+
         for(c=(length_argv1+1);c <array1[i]->length;c++){
-            //printf("char %c\n",array1[i]->datas[c]);
             sub1[c-(length_argv1+1)] = array1[i]->datas[c];
-            //printf("charac1 %c index %d\n",sub1[c-(argv1+1)],c-(argv1+1));
         }
             //sub1[taille] = '/0';
         //printf("sub1 : %s\n",sub1);
@@ -148,19 +139,17 @@ int analyze(c_String** array1,c_String** array2,char* argv1,char* argv2,int cpt1
             sub2[c-(length_argv2+1)] = array2[j]->datas[c];
             //printf("charac2 %c index %d\n",sub2[c-(argv2+1)],c-(argv2+1));
         }
-            //sub2[taille2] = '/0';
-        //printf("sub2 : %s  sub1 %s\n",sub2,sub1);
+        //sub2[taille2] = '/0';
 
         if(strcmp(sub1,sub2) == 0){
-						printf("analyzeAndPrint fichier egaux %s %s", array1[i]->datas, array2[j]->datas);
 						//analyzeAndPrint(array1[i]->datas, array2[j]->datas,"");
             exist=3;
         }
 					free(sub2);
     }
-    //printf("Exist : %d\n", exist);
+
     if(exist==0){
-			//printf("length = %d\n", strlen(sub1));
+
       printf("Only in %s : %s\n",argv1, sub1);
     }
      exist=0;
@@ -195,24 +184,20 @@ int analyzereverse(c_String** array1,c_String** array2,char* argv1,char* argv2,i
             sub1[c-(length_argv2+1)] = array2[i]->datas[c];
         }
             //sub1[taille] = '/0';
-           // printf("sub1 : %s %d\n",sub1,strlen(sub1));
 
     for(j=0;j<cpt1;j++){
 				//printf("DEBUG: %d\n", array1[j]->length);
         taille2 = (array1[j]->length)-(length_argv1);
-        //printf("passage %d\n",taille2);
+
         char* sub2 = calloc(sizeof(char)*taille2, sizeof(char));
-        //printf("len %d\n",array2[j]->length);
+
         for(c=(length_argv1+1);c <array1[j]->length;c++){
-            //printf("char %c\n",array1[i]->datas[c]);
+
             sub2[c-(length_argv1+1)] = array1[j]->datas[c];
         }
-            //sub2[taille2] = '/0';
-            //printf("sub2 : %s %d\n",sub2,strlen(sub2));
 
         if(strcmp(sub1,sub2)==0){
-            //printf("test\n");
-            //printf("sub2 : %s sub1 :%s\n",sub2,sub1);
+
             exist=3;;
         }
 				free(sub2);
@@ -275,15 +260,7 @@ void analyzeAndPrint(char* fileName1, char* fileName2, char* options){
   t_list** results; /* freed at the end of analyzeAndPrint */
   results = subsequence_research(myCustomFile->lines_content, myCustomFile2->lines_content, myCustomFile->lines_count, myCustomFile2->lines_count, options);
 
-  //printf("/*********************************** SUBSEQUENCES  ******************************************/\n");
-  //printf("DEBUG File 1 :");
-  //list_display(results[0]);
-  //printf("DEBUG File 2 :");
-  //list_display(results[1]);
 
-  //printf("/*********************************** DISPLAY *******************************************/\n");
-  //printf("DEBUG: results[0]->length = %d\tmyCustomFile->lines_count = %d\n", results[0]->length,myCustomFile->lines_count);
-  //printf("DEBUG: results[1]->length = %d\tmyCustomFile2->lines_count = %d\n", results[1]->length,myCustomFile2->lines_count);
   if(results[0]->length - 2 == myCustomFile->lines_count && results[1]->length - 2 == myCustomFile2->lines_count && myCustomFile->end == myCustomFile2->end){
       printf("Files %s and %s are identical", fileName1, fileName2);
   }else{
@@ -433,8 +410,6 @@ t_list** subsequence_research(char** lines_content1, char** lines_content2, int 
       for(j = offset; j < lines_count1; j++){
 
         if(compareString(str, lines_content1[j], options) == 0){
-        //if(strcmp(str, lines_content1[j]) == 0){
-
           if(store){
             /** REPLACE **/
             index = ((int)(tmp_list2->length-1) < 0 ? 0 : (int)(tmp_list2->length-1));
